@@ -27,11 +27,12 @@ export default async function handler(req, res) {
     const reply = data.choices?.[0]?.message?.content;
 
     if (!reply) {
-      return res.status(500).json({ error: 'No reply from AI' });
+      return res.status(500).json({ error: 'No reply from AI', fullResponse: data });
     }
 
     res.status(200).json({ reply });
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong' });
+    console.error('Error calling OpenAI:', error);
+    res.status(500).json({ error: 'Something went wrong', details: error.message });
   }
 }
